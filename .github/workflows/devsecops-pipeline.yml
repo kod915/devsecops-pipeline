@@ -1,0 +1,54 @@
+name: Secure DevSecOps Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  static_analysis_and_secrets:
+    name: Static Analysis & Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secret Detection (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Dockerfile Linting (Hadolint)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: tests/Dockerfile-vulnerable
+          failure-threshold: error
+      - name: Ansible Code Linting (Ansible-lint)
+        uses: ansible/ansible-lint-action@v6
+        with:
+          targets: |
+            ansible/site.yml
+  container_security_scan:
+    name: Container Vulnerability Scan (Trivy)
+    needs: static_analysis_and_secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Repository
+        uses: actions/checkout@v4
+
+      - name: Build Test Image
+        run: docker build -t my-vulnerable-app:latest -f tests/Dockerfile-vulnerable .
+
+      - name: Scan Container Image (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'my-vulnerable-app:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

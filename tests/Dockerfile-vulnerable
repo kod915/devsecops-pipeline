@@ -1,0 +1,15 @@
+#1
+FROM ubuntu:18.04
+
+#2
+WORKDIR /app
+
+#3
+USER root
+
+#4
+RUN apt-get update && apt-get install -y curl wget nginx
+
+#5
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

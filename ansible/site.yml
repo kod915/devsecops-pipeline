@@ -1,0 +1,16 @@
+---
+- name: Insecure Server Configuration
+  hosts: localhost
+  connection: local
+  become: true
+  vars:
+    aws_access_key: "AKIAEXAMPLE"
+    db_password: "supersecretpassword"
+  tasks:
+    - name: Create a file with sensitive information
+      shell: chmod 777 /etc/ 
+    
+    - name: Download from insecure HTTP source
+      get_url:
+        url: "http://example.com/insecure-script.sh"
+        dest: "/tmp/insecure-script.sh"
