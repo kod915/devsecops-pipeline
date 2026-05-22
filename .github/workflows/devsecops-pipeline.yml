@@ -28,7 +28,7 @@ jobs:
           dockerfile: tests/Dockerfile-vulnerable
           failure-threshold: error
       - name: Ansible Code Linting (Ansible-lint)
-        uses: ansible/ansible-lint-action@v6
+        uses: ansible/ansible-lint@v6
         with:
           targets: |
             ansible/site.yml
