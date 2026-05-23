@@ -4,8 +4,13 @@
   connection: local
   become: true
   vars:
-    aws_access_key: "AKIAEXAMPLE"
+    aws_access_key: "AKIA1Q2W3E4R5T6Y7U8I"
     db_password: "supersecretpassword"
+    github_token: "ghp_abcDEF1234567890ghijklmnopqrSTUVWXYZ"
+    ssh_key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDE...
+      -----END PRIVATE KEY-----
   tasks:
     - name: Create a file with sensitive information
       shell: chmod 777 /etc/
