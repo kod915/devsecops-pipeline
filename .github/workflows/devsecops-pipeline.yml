@@ -21,7 +21,6 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
       - name: Dockerfile Linting (Hadolint)
         uses: hadolint/hadolint-action@v3.1.0
         with:

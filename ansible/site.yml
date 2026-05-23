@@ -8,8 +8,7 @@
     db_password: "supersecretpassword"
   tasks:
     - name: Create a file with sensitive information
-      shell: chmod 777 /etc/ 
-    
+      shell: chmod 777 /etc/
     - name: Download from insecure HTTP source
       get_url:
         url: "http://example.com/insecure-script.sh"
