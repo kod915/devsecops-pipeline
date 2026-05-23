@@ -27,11 +27,10 @@ jobs:
         with:
           dockerfile: tests/Dockerfile-vulnerable
           failure-threshold: error
-      - name: Ansible Code Linting (Ansible-lint)
-        uses: ansible/ansible-lint@v6
-        with:
-          targets: |
-            ansible/site.yml
+      - name: Install and Run Ansible Lint
+        run: |
+          pip3 install ansible-lint
+          ansible-lint ansible/
   container_security_scan:
     name: Container Vulnerability Scan (Trivy)
     needs: static_analysis_and_secrets
